@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!-- 1. 定义日志输出格式和路径变量 -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n" />
+    <property name="LOG_FILE_PATH" value="C:\D\blog\project\fastfoodDataEngine\logs" /> <!-- 日志存储路径（项目根目录下的logs文件夹） -->
+    <property name="LOG_FILE_NAME" value="dataengine" /> <!-- 日志文件前缀 -->
+
+    <!-- 2. 控制台输出配置 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 控制台输出格式 -->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset> <!-- 避免中文乱码 -->
+        </encoder>
+        <!-- 控制台输出级别过滤（只输出INFO及以上级别） -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!-- 3. 普通日志文件输出（INFO及以上级别，按天滚动） -->
+    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志文件路径和名称 -->
+        <file>${LOG_FILE_PATH}/${LOG_FILE_NAME}.log</file>
+
+        <!-- 滚动策略：按天生成新文件，保留30天 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 滚动文件命名格式（如 app-2024-08-24.log） -->
+            <fileNamePattern>${LOG_FILE_PATH}/${LOG_FILE_NAME}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 日志保留天数 -->
+            <maxHistory>1</maxHistory>
+            <!-- 总日志大小限制（可选） -->
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+
+        <!-- 输出格式 -->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <!-- 只输出INFO及以上级别，且排除ERROR级别（ERROR单独输出） -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch> <!-- 匹配到ERROR级别则拒绝 -->
+            <onMismatch>ACCEPT</onMismatch> <!-- 不匹配则接受 -->
+        </filter>
+    </appender>
+
+    <!-- 4. 错误日志文件输出（仅ERROR级别，按天滚动） -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}/${LOG_FILE_NAME}-error.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/${LOG_FILE_NAME}-error-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <!-- 只输出ERROR级别 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 5. 日志级别配置（root为全局配置，可针对特定包配置不同级别） -->
+    <root level="INFO"> <!-- 全局日志级别：INFO（输出INFO、WARN、ERROR） -->
+        <appender-ref ref="CONSOLE" /> <!-- 控制台输出 -->
+        <appender-ref ref="FILE_INFO" /> <!-- 普通日志文件 -->
+        <appender-ref ref="FILE_ERROR" /> <!-- 错误日志文件 -->
+    </root>
+
+    <!-- 6. 针对特定包的日志级别配置（优先级高于root） -->
+    <!-- 示例：MyBatis日志级别设为DEBUG，便于调试SQL -->
+    <logger name="com.asher.fastfooddataengine.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE_INFO" />
+    </logger>
+
+    <!-- 示例：Spring框架日志级别设为WARN（减少冗余日志） -->
+    <logger name="org.springframework" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE_INFO" />
+    </logger>
+</configuration>

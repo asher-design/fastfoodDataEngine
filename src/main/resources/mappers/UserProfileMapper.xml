@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.asher.fastfooddataengine.mappers.UserProfileMapper">
+    <!-- 定义结果集映射：解决实体类驼峰命名与数据库下划线命名的对应关系 -->
+    <resultMap id="UserProfileResultMap" type="com.asher.fastfooddataengine.model.UserProfile">
+        <!-- 主键映射 -->
+        <id column="user_id" property="userId"/>
+
+        <!-- 普通字段映射 -->
+        <result column="gender" property="gender"/>
+        <result column="birthday" property="birthday"/>
+        <result column="signature" property="signature"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_verified" property="isVerified"/>
+        <result column="follower_count" property="followerCount"/>
+        <result column="following_count" property="followingCount"/>
+        <result column="total_likes" property="totalLikes"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="status" property="status"/>
+        <result column="age" property="age"/>
+        <result column="zodiac" property="zodiac"/>
+        <result column="marital_status" property="maritalStatus"/>
+        <result column="parenting_status" property="parentingStatus"/>
+        <result column="hometown_city" property="hometownCity"/>
+        <result column="residence_city" property="residenceCity"/>
+        <result column="work_location" property="workLocation"/>
+        <result column="reside_location" property="resideLocation"/>
+        <result column="hobbies" property="hobbies"/>
+    </resultMap>
+
+
+    <!-- 根据ID查询用户 -->
+    <select id="getUserByUserId" parameterType="Long" resultMap="UserProfileResultMap">
+        SELECT * FROM user_info WHERE user_id = #{userId}
+    </select>
+
+
+</mapper>
