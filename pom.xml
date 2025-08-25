@@ -10,9 +10,9 @@
     </parent>
     <groupId>com.asher</groupId>
     <artifactId>fastfoodDataEngine</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>fastfoodDataEngine</name>
-    <description>fastfoodDataEngine</description>
+    <version>0.0.1</version>
+    <name>fast-food-data-engine</name>
+    <description>fast-food-data-engine</description>
     <url/>
     <licenses>
         <license/>
@@ -88,17 +88,38 @@
             </exclusions>
         </dependency>
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.24</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>3.0.5</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.springframework.boot</groupId>
                             <artifactId>spring-boot-configuration-processor</artifactId>
+                            <version>3.0.5</version>
                         </path>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -111,7 +132,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.0.5</version>
                 <configuration>
+                    <classifier>exec</classifier> <!-- 生成可执行 JAR 时添加后缀 -->
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
