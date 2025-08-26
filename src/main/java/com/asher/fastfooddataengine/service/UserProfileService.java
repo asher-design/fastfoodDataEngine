@@ -1,6 +1,7 @@
 package com.asher.fastfooddataengine.service;
 
 import com.asher.fastfooddataengine.model.UserProfile;
+import org.apache.dubbo.config.annotation.DubboService;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserProfileService {
      * @return
      * @throws RemoteException
      */
-    UserProfile getUserByUserId(Long userId, List<String> fields) throws RemoteException;
+    UserProfile getUserByUserId(Long userId, List<String> fields);
 
     /**
      * 新增用户信息
@@ -27,5 +28,5 @@ public interface UserProfileService {
      * @return
      * @throws RemoteException
      */
-    boolean addUserProfile(UserProfile user) throws RemoteException;
+    boolean addUserProfile(UserProfile user);
 }

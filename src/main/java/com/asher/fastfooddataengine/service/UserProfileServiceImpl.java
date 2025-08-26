@@ -22,12 +22,12 @@ public class UserProfileServiceImpl implements UserProfileService {
     private UserProfileMapper userProfileMapper;
 
     // 必须声明抛出RemoteException的构造函数
-    public UserProfileServiceImpl() throws RemoteException {
-        super();
+    public UserProfileServiceImpl() {
     }
 
     @Override
     public UserProfile getUserByUserId(Long userId, List<String> fields){
+        System.out.println("getUserByUserId 方法被调用，用户信息: " + userId);
         if (userId <= 0) {
             log.error("用户ID不合法");
             return null;
@@ -45,7 +45,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public boolean addUserProfile(UserProfile user) throws RemoteException {
+    public boolean addUserProfile(UserProfile user){
         // 实际项目中这里会调用Mapper插入数据
         System.out.println("新增用户: " + user.getUserId());
         return true;
